@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, TextInput } from 'react-native';
+import {Text, TextInput, Image, View } from 'react-native';
 import Button from './Button';
 import Card from './Card';
 import CardSection from './CardSection'
@@ -10,17 +10,21 @@ class Login extends Component {
         super(props);
         this.state = {
             email: '',
-            senha: '',
+            password: '',
         }
     }
 
-    onSelectButton = (email) => {
-        console.log("OLAR");
-        var regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (regex.test(email))
-            console.log("True");
+    onPressButton = (email, password) => {
+        var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        var checkPassword = /.{4,}/;
+
+        if (checkEmail.test(email))
+            if (checkPassword.test(password))
+                alert('PARABENS JOVI');
+            else
+                alert('Please insert a valid password!');
         else   
-            console.log("False");
+            alert('Please insert a valid e-mail!');
     }    
 
     render(){
@@ -41,20 +45,20 @@ class Login extends Component {
                     <TextInput
                         secureTextEntry
                         placeholder="senha"
-                        value={this.state.senha}
-                        onChangeText={senha => this.setState({ senha })}
+                        value={this.state.password}
+                        onChangeText={password => this.setState({ password })}
                         style={{height: 20, width: 200}}
                     />
                 </CardSection>
     
                 <CardSection>
                     <Button
-                        onClick={() => this.onSelectButton(this.state.email)}
-                    >
+                        onPress={() => this.onPressButton(this.state.email, this.state.password)} >
                         Login
                     </Button>
                 </CardSection>
-    
+                
+
             </Card>
         )
     }

@@ -14,7 +14,7 @@ const Header = () => {
      
 }
 
-const styles = {
+const styles: any = {
     viewStyle:{
         backgroundColor: '#F8F8F8',
         justifyContent: 'center',

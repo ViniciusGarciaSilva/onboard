@@ -9,7 +9,7 @@ const CardSection = (props) => {
     );
 };
 
-const styles = {
+const styles: any = {
     containerStyle: {
         borderBottomWidth: 1,
         padding: 5,

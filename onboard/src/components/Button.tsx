@@ -5,7 +5,9 @@ const Button = (props) => {
     const { buttonStyle, textStyle } = styles;
 
     return (
-        <TouchableOpacity onClick={props.onClick} style={buttonStyle}>
+        <TouchableOpacity 
+            onPress={props.onPress}
+            style={buttonStyle}>
             <Text style={textStyle}>
                 {props.children}
             </Text>
@@ -13,7 +15,7 @@ const Button = (props) => {
     );
 };
 
-const styles = {
+const styles: any = {
     textStyle: {
         alignSelf: 'center',
         color: '#007aff',

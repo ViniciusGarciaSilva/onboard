@@ -9,7 +9,7 @@ const Card = (props) => {
     );
 };
 
-const styles = {
+const styles: any = {
     containerStyle: {
         borderWidth: 1,
         borderRadius: 2,

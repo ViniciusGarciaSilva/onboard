@@ -2,26 +2,18 @@ import React, {Component} from 'react';
 import {Text, TouchableOpacity, ActivityIndicator, View } from 'react-native';
 
 class Button extends Component {
-    constructor(props){
-        super(props); 
-    }
-    displayButton(){
-        if(this.props.loading)
-            return(
-                <ActivityIndicator /> 
-            );
-        else
-            return(
-                <Text style={styles.textStyle}>
-                    {this.props.children}
-                </Text>
-            );
-    }
+
     render(){
+        let buttonContent;
+        const indicator = <ActivityIndicator />;
+        const text = <Text style={styles.textStyle}>{this.props.children}</Text>;
+
         return(
-            <TouchableOpacity   onPress={this.props.onPress} 
-                                style={styles.buttonStyle}>
-                {this.displayButton()}
+            <TouchableOpacity   
+                onPress={this.props.onPress} 
+                style={styles.buttonStyle}
+                disabled={this.props.valid? true : false}>
+                {this.props.loading? indicator : text }
             </TouchableOpacity>
         );
     }

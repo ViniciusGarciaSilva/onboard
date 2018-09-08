@@ -4,7 +4,6 @@ import Button from './Button';
 import Card from './Card';
 import CardSection from './CardSection'
 
-
 class Login extends Component {
     constructor(props){
         super(props);
@@ -14,18 +13,19 @@ class Login extends Component {
             loading: false
         }
     }
+    
     onPressButton = (email, password) => {
         var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         var checkPassword = /.{4,}/;
 
-        if (checkEmail.test(email))
-            if (checkPassword.test(password))
-                this.setState({loading: true});
-            else
-                alert('Please insert a valid password!');
-        else   
+        if (!checkEmail.test(email))
             alert('Please insert a valid e-mail!');
-    } 
+        if (!checkPassword.test(password))
+            alert('Please insert a valid password!');
+        if (checkEmail.test(email) && checkPassword.test(password))
+            this.state({loading: true});     
+    }
+     
     render(){
         return(
             <Card>

@@ -12,10 +12,10 @@ class Button extends Component {
                 onPress={this.props.onPress} 
                 style={this.props.valid? styles.buttonEnabled : styles.buttonDisabled}
                 disabled={this.props.valid? false : true}>
-                {this.props.loading? indicator : text }
+                {this.props.loading?indicator : text}
             </TouchableOpacity>
         );
-    }
+    };
 };
 
 const styles: any = {

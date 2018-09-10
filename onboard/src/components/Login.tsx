@@ -11,24 +11,63 @@ class Login extends Component {
             email: '',
             password: '',
             loading: false,
-            valid: false
+            validEmail: false,
+            validPassword: false,
+            data: null
         }
     }
     
+    checkCredentials = () => {
+        return fetch('https://tq-template-server-sample.herokuapp.com/authenticate', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    'password': this.state.password,
+                    'email': this.state.email,
+                    'rememberMe': 'false', 
+                }),
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                //console.log('email: ', this.state.email, 'password: ', this.state.password,'ResponseJson: ', responseJson);
+                return (responseJson);
+            })
+            .catch((error) => {
+                console.error(error);
+            })   
+    }
+
     onPressButton = () => {
         this.setState({loading: true});
+        this.checkCredentials()
+            .then((data) => {
+                console.log(data);
+                this.setState({data:data});
+                if(data.data==null){
+                    alert(data.errors[0].message);
+                }
+               
+            });
+         
     };
 
     onChangeTextInput = (email, password) => {
         var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         var checkPassword = /.{4,}/;
 
-        if (!checkEmail.test(email))
-            this.setState({valid:false, email:email, password:password});
-        if (!checkPassword.test(password))
-            this.setState({valid:false, email:email, password:password});
+        if (checkEmail.test(email))
+            this.setState({validEmail:true, email:email, password:password})
+        else
+            this.setState({validEmail:false, email:email, password:password})
+        if (checkPassword.test(password))
+            this.setState({validPassword:true, email:email, password:password});
+        else
+            this.setState({validPassword:false, email:email, password:password});
         if (checkEmail.test(email) && checkPassword.test(password))
-            this.setState({valid:true, email:email, password:password});
+            this.setState({validEmail:true, validPassword:true, email:email, password:password});
     };
      
     render(){
@@ -43,9 +82,9 @@ class Login extends Component {
                                     placeholder="user@gmail.com"
                                     value={this.state.email}
                                     onChangeText={ email => this.onChangeTextInput(email, this.state.password)}
-                                    style={styles.textInputStyle}
+                                    style={this.state.validEmail? styles.InputValidStyle:styles.InputInvalidStyle}
                                 />
-                                <Text style={styles.invalidStyle} >Invalid E-mail !</Text>    
+                                <Text style={(this.state.validEmail)? styles.validStyle:styles.invalidStyle} >Invalid E-mail !</Text>    
                             </View>    
                         </View>
                     </CardSection>
@@ -58,9 +97,9 @@ class Login extends Component {
                                     placeholder="password"
                                     value={this.state.password}
                                     onChangeText={password => this.onChangeTextInput(this.state.email, password)}
-                                    style={styles.textInputStyle}
+                                    style={this.state.validPassword? styles.InputValidStyle : styles.InputInvalidStyle}
                                 />
-                                <Text style={styles.invalidStyle} >Invalid Password !</Text> 
+                                <Text style={this.state.validPassword? styles.validStyle:styles.invalidStyle} >Invalid Password !</Text> 
                             </View>    
                         </View>
                     </CardSection>
@@ -70,7 +109,7 @@ class Login extends Component {
                 <Button 
                     onPress={() => this.onPressButton()}
                     loading={this.state.loading}
-                    valid={this.state.valid}
+                    valid={this.state.validEmail&this.state.validPassword}
                 >
                     Login
                 </Button>
@@ -91,21 +130,37 @@ const styles: any = {
         marginLeft: 10, 
         marginRight: 10 
     },
-    textInputStyle:{
+    InputInvalidStyle:{
         paddingLeft:5, 
-        fontSize:18, 
-        flex: 1, 
+        fontSize:17, 
+        //flex: 1, 
+        height: 40,
         borderRadius: 5, 
         borderColor: '#cc0000', 
+        //borderColor: '#fff',    
+        //backgroundColor: '#FFA4A4',
+        borderWidth: 0.5 
+    },
+    InputValidStyle:{
+        paddingLeft:5, 
+        fontSize:17, 
+        flex: 1, 
+        borderRadius: 5, 
+        borderColor: '#FFF', 
         borderWidth: 1 
     },
     textStyle:{
-        fontSize: 18, 
-        width: 100, 
-        paddingBottom: 20
+        fontSize: 17, 
+        width: 90, 
+        paddingBottom: 23
     },
     invalidStyle:{
-        marginTop: 5, 
+        fontSize: 13,
+        marginTop: 4, 
         color: '#cc0000'
+    },
+    validStyle:{
+        marginTop: 5,
+        color: '#fff'
     }
 }

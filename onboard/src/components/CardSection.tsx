@@ -11,15 +11,16 @@ const CardSection = (props) => {
 
 const styles: any = {
     containerStyle: {
-        height: 50,
-        borderBottomWidth: 1,
+        height: 90,
+        marginBottom: 10,
         padding: 5,
         backgroundColor: '#fff',
         justifyContent: 'flex-start',
-        flexDirection: 'row',
-        borderColor: '#ddd',
-        position: 'relative'
+        flexDirection: 'column',
+        borderRadius: 5
     }
 }
 
 export default CardSection;
+
+// borderColor: '#F3866E', 

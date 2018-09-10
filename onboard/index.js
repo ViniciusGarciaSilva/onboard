@@ -1,15 +1,15 @@
 import { AppRegistry} from 'react-native';
-import Login from './src/screens/Login';
+import Login from './src/screens/LoginScreen';
 import { createStackNavigator } from 'react-navigation';
-import Welcome from './src/screens/Welcome'
+import List from './src/screens/ListScreen'
 
 const App = createStackNavigator(
     {
         Login: { screen: Login},
-        Welcome: { screen: Welcome}
+        List: { screen: List}
     },
     {
-        initialRouteName: 'Login',
+        initialRouteName: 'List',
         navigationOptions: {
             title: 'Onboard',
             headerStyle:{

@@ -3,7 +3,6 @@ import {Text, TextInput, View } from 'react-native';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import CardSection from '../components/CardSection'
-import Welcome from './Welcome';
 
 class Login extends Component {
     constructor(props){
@@ -51,7 +50,7 @@ class Login extends Component {
                     alert(data.errors[0].message);
                 }
                 else
-                    this.props.navigation.navigate('Welcome');
+                    this.props.navigation.navigate('List');
                
             });
          
@@ -166,6 +165,3 @@ const styles: any = {
         color: '#fff'
     }
 }
-/*
-  
-            */

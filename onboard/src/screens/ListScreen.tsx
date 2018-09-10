@@ -7,36 +7,51 @@ class List extends Component {
     constructor(props){
         super(props);
         this.state = {
-            data: [
-                { key: 'Vinicius 1',  name: 'Vinicius',   role: 'Estagiário 1'},
-                { key: 'Douglas 1',   name: 'Douglas',    role: 'Estagiário 2'},
-                { key: 'Everaldo 1',  name: 'Everaldo',   role: 'Estagiário 3'},
-                { key: 'Vinicius 2',  name: 'Vinicius',   role: 'Estagiário 4'},
-                { key: 'Douglas 2',   name: 'Douglas',    role: 'Estagiário 5'},
-                { key: 'Everaldo 2',  name: 'Everaldo',   role: 'Estagiário 6'},
-                { key: 'Vinicius 3',  name: 'Vinicius',   role: 'Estagiário 7'},
-                { key: 'Douglas 3',   name: 'Douglas',    role: 'Estagiário 8'},
-                { key: 'Everaldo 3',  name: 'Everaldo',   role: 'Estagiário 9'},
-                { key: 'Vinicius 4',  name: 'Vinicius',   role: 'Estagiário 10'},
-                { key: 'Douglas 4',   name: 'Douglas',    role: 'Estagiário 11'},
-                { key: 'Everaldo 4',  name: 'Everaldo',   role: 'Estagiário 12'}
-
-            ]
+            data: []
         }
     }
-    
+
+    componentDidMount = () => {
+        this.getUsers(0,10)
+        .then( (data) => {
+            console.log(data);
+            this.setState( {data: data} );
+        })
+    }
+
+    getUsers = (page:any, window:any) => {
+        return fetch('https://tq-template-server-sample.herokuapp.com/users?pagination={"page": '+page+' , "window": '+window+'}', {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: this.props.navigation.state.params.token
+                }
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                console.log('responseJson: ', responseJson);
+                return (responseJson);
+            })
+            .catch((error) => {
+                console.error(error);
+            })   
+    }
+
     render(){
         return (
             <Card>
                 <FlatList
-                    data={this.state.data}
+                    data={this.state.data.data}
                     renderItem={({item}) => 
                         <CardList>  
                             <Text style={styles.nameStyle}> {item.name} </Text>
                             <Text style={styles.roleStyle}> {item.role} </Text>  
                         </CardList>
                     }
+                    keyExtractor={ ( item ) => String(item.id)}
                 />
+
             </Card>
         );
     }

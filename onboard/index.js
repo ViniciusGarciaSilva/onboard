@@ -9,7 +9,7 @@ const App = createStackNavigator(
         List: { screen: List}
     },
     {
-        initialRouteName: 'List',
+        initialRouteName: 'Login',
         navigationOptions: {
             title: 'Onboard',
             headerStyle:{

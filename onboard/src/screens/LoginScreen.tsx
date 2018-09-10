@@ -8,11 +8,11 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            email: '',
-            password: '',
+            email: 'admin@taqtile.com',
+            password: '1111',
             loading: false,
-            validEmail: false,
-            validPassword: false,
+            validEmail: true,
+            validPassword: true,
             data: null
         }
     }
@@ -50,8 +50,11 @@ class Login extends Component {
                     alert(data.errors[0].message);
                 }
                 else
-                    this.props.navigation.navigate('List');
-               
+                {
+                    console.log(data.data.token);
+                    this.props.navigation.navigate('List', {token: data.data.token});
+                }
+                                   
             });
          
     };

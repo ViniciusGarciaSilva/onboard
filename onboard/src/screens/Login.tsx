@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import {Text, TextInput, View } from 'react-native';
-import Button from './Button';
-import Card from './Card';
-import CardSection from './CardSection'
+import Button from '../components/Button';
+import Card from '../components/Card';
+import CardSection from '../components/CardSection'
+import Welcome from './Welcome';
 
 class Login extends Component {
     constructor(props){
@@ -16,7 +17,7 @@ class Login extends Component {
             data: null
         }
     }
-    
+
     checkCredentials = () => {
         return fetch('https://tq-template-server-sample.herokuapp.com/authenticate', {
                 method: 'POST',
@@ -49,6 +50,8 @@ class Login extends Component {
                 if(data.data==null){
                     alert(data.errors[0].message);
                 }
+                else
+                    this.props.navigation.navigate('Welcome');
                
             });
          
@@ -103,16 +106,15 @@ class Login extends Component {
                             </View>    
                         </View>
                     </CardSection>
-                    
                 </Card>
                 <View style={{marginTop: 10, height:50}}>
-                <Button 
-                    onPress={() => this.onPressButton()}
-                    loading={this.state.loading}
-                    valid={this.state.validEmail&this.state.validPassword}
-                >
-                    Login
-                </Button>
+                    <Button 
+                        onPress={() => this.onPressButton()}
+                        loading={this.state.loading}
+                        valid={this.state.validEmail&this.state.validPassword}
+                    >
+                        Login
+                    </Button>
                 </View>
             </View>
         )
@@ -133,8 +135,7 @@ const styles: any = {
     InputInvalidStyle:{
         paddingLeft:5, 
         fontSize:17, 
-        //flex: 1, 
-        height: 40,
+        height: 39,
         borderRadius: 5, 
         borderColor: '#cc0000', 
         //borderColor: '#fff',    
@@ -143,11 +144,11 @@ const styles: any = {
     },
     InputValidStyle:{
         paddingLeft:5, 
-        fontSize:17, 
-        flex: 1, 
+        fontSize:17,  
+        height: 40,
         borderRadius: 5, 
         borderColor: '#FFF', 
-        borderWidth: 1 
+        borderWidth: 0.5 
     },
     textStyle:{
         fontSize: 17, 
@@ -160,7 +161,11 @@ const styles: any = {
         color: '#cc0000'
     },
     validStyle:{
-        marginTop: 5,
+        fontSize: 13,
+        marginTop: 4,
         color: '#fff'
     }
 }
+/*
+  
+            */

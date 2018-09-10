@@ -1,20 +1,32 @@
-// Index.ios.js - place code in here for IOS
+import { AppRegistry} from 'react-native';
+import Login from './src/screens/Login';
+import { createStackNavigator } from 'react-navigation';
+import Welcome from './src/screens/Welcome'
 
-// Import a libray to help create a component
-import React from 'react';
-import { AppRegistry, View, Text} from 'react-native';
-import Header from './src/components/Header';
-import Login from './src/components/Login'
+const App = createStackNavigator(
+    {
+        Login: { screen: Login},
+        Welcome: { screen: Welcome}
+    },
+    {
+        initialRouteName: 'Login',
+        navigationOptions: {
+            title: 'Onboard',
+            headerStyle:{
+                backgroundColor: '#27D7F0',
+                height: 60,
+                paddingTop: 15,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.2,
+                elevation: 2
+            },
+            headerTitleStyle:{
+                fontWeight: 'bold',
+                fontSize: 20
+            }
+        }
+    }
+);
 
-// Create a component
-const App = () => {
-    return (
-    <View>
-        <Header />
-        <Login />
-    </View>
-    ); 
-};
-
-// Render it to the device
 AppRegistry.registerComponent('onboard', () => App );

@@ -12,7 +12,7 @@ class Button extends Component {
                 onPress={this.props.onPress} 
                 style={this.props.valid? styles.buttonEnabled : styles.buttonDisabled}
                 disabled={this.props.valid? false : true}>
-                {this.props.loading?indicator : text}
+                {this.props.loading? indicator : text}
             </TouchableOpacity>
         );
     };
@@ -30,8 +30,6 @@ const styles: any = {
         backgroundColor: '#27D7F0',
         borderRadius: 5,
         borderWidth: 0,
-        marginLeft: 10,
-        marginRight: 10,
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },
@@ -43,8 +41,6 @@ const styles: any = {
         backgroundColor: '#CFCFCF',
         borderRadius: 5,
         borderWidth: 0,
-        marginLeft: 10,
-        marginRight: 10,
         justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 3 },

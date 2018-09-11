@@ -3,12 +3,14 @@ import { createStackNavigator } from 'react-navigation';
 import Login from './src/screens/LoginScreen';
 import List from './src/screens/ListScreen';
 import Detail from './src/screens/DetailScreen';
+import CreateUser from './src/screens/CreateUserScreen';
 
 const App = createStackNavigator(
     {
         Login: { screen: Login },
         List: { screen: List },
-        Detail: { screen: Detail }
+        Detail: { screen: Detail },
+        CreateUser: { screen: CreateUser }
     },
     {
         initialRouteName: 'Login',

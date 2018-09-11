@@ -1,0 +1,168 @@
+import React, {Component} from 'react';
+import { View, StyleSheet, Text } from 'react-native';
+import Card from '../components/Card';
+import Field from '../components/Field';
+import Button from '../components/Button';
+import Picker from '../components/Picker';
+
+class CreateUser extends Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            name: '',
+            email: '',
+            password: '',
+            role: '',
+            validName: false,
+            validEmail: false,
+            validPassword: false,
+            validRole: false,
+            loading: false,
+            pickerItems:[ 
+                { label:'Admin', value: 'admin', },
+                { label:'User', value: 'user', },
+            ],
+            data: null
+        };
+    }
+
+    createUser = () => {
+        return fetch('https://tq-template-server-sample.herokuapp.com/users', {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6NTF9LCJpYXQiOjE1MzY2OTA3MDUsImV4cCI6MTUzNjY5NDMwNX0.7YW5JGArrEI4XW3uHsQclWvivHPUrmTYPf7JrCE3974'//this.props.navigation.state.params.token
+                },
+                body: JSON.stringify({
+                    "name": this.state.name,
+                    "password": this.state.password,
+                    "email": this.state.email,
+                    "role": this.state.role
+                }),
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                return (responseJson);
+            })
+            .catch((error) => {
+                console.error(error);
+            })   
+    }
+
+    onChangeRole = (role:any) => {
+        this.setState({role: role});   
+        if(role=='admin' || role=='user')
+            this.setState({validRole:true});
+        else
+            this.setState({validRole:false}); 
+        console.log("state.role: ",this.state.role, "role:", role);
+    }  
+
+    onChangeName = (name: any) => {
+        var checkName = /^[a-zA-Z]+$/;
+        this.setState({name: name});
+
+        if (checkName.test(name))
+            this.setState({validName:true});
+        else
+            this.setState({validName:false});
+    }
+
+    onChangeEmail = (email: any) =>{
+        var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        this.setState({email: email});
+
+        if (checkEmail.test(email))
+            this.setState({validEmail:true});
+        else
+            this.setState({validEmail:false});
+
+    }
+
+    onChangePassword = (password: any) => {
+        var checkPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/; 
+        this.setState({password: password});
+        
+        if (checkPassword.test(password))
+            this.setState({validPassword:true});
+        else
+            this.setState({validPassword:false});
+    }
+
+    onPressButton = () => {
+        this.setState({loading: true});
+        this.createUser()
+            .then( (response) => {
+                console.log(response);
+                this.setState({loading: false, data: response});
+                if(response.data == null)
+                    alert(response.errors[0].message);
+                else{
+                    alert("User Created!");
+                    this.props.navigation.navigate('List');
+                }
+                    
+            } )
+    }
+
+    render(){
+        return (
+            <Card>
+                <Field
+                    field="Name"
+                    secure={false}
+                    placeholder="name"
+                    value={this.state.name}
+                    onChangeText={this.onChangeName}
+                    valid={this.state.validName}
+                    invalid="Invalid Name !" >
+                </Field>
+                <Field
+                    field="E-mail"
+                    secure={false}
+                    placeholder="e-mail"
+                    value={this.state.email}
+                    onChangeText={this.onChangeEmail}
+                    valid={this.state.validEmail}
+                    invalid="Invalid E-mail !">
+                </Field>
+                <Field
+                    field="Password"
+                    secure={true}
+                    placeholder="password"
+                    value={this.state.password}
+                    onChangeText={this.onChangePassword}
+                    valid={this.state.validPassword}
+                    invalid="Invalid Password !">
+                </Field>
+                <Picker
+                    pickerItems={this.state.pickerItems}
+                    onValueChange={this.onChangeRole}
+                    item={this.state.item}
+                    field="Role"
+                    secure={false}
+                    placeholder={{
+                        label: 'select a role',
+                        value: null,
+                    }}>
+                </Picker>
+                 
+                <View style={{marginTop: 10, height:50 }}>
+                    <Button 
+                        onPress={() => this.onPressButton()}
+                        loading={this.state.loading}
+                        valid={
+                            this.state.validEmail&
+                            this.state.validPassword&
+                            this.state.validName&
+                            this.state.validRole}>
+                        Create
+                    </Button>
+                </View>
+            </Card>
+        )
+    }
+}
+
+export default CreateUser;

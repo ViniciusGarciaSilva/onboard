@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import {Text, TextInput, View } from 'react-native';
+import React, { Component } from 'react';
+import { View } from 'react-native';
 import Button from '../components/Button';
 import Card from '../components/Card';
-import CardSection from '../components/CardSection'
+import Field from '../components/Field'
 
 class Login extends Component {
     constructor(props: any){
@@ -14,7 +14,7 @@ class Login extends Component {
             validEmail: true,
             validPassword: true,
             data: null
-        }
+        };
     }
 
     checkCredentials = () => {
@@ -32,7 +32,6 @@ class Login extends Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                //console.log('email: ', this.state.email, 'password: ', this.state.password,'ResponseJson: ', responseJson);
                 return (responseJson);
             })
             .catch((error) => {
@@ -44,126 +43,67 @@ class Login extends Component {
         this.setState({loading: true});
         this.checkCredentials()
             .then((data) => {
-                console.log(data);
-                this.setState({data:data});
-                if(data.data==null){
-                    alert(data.errors[0].message);
-                }
+                this.setState({data:data, loading:false});
+                if(data.data==null)
+                    alert(data.errors[0].message); 
                 else
-                {
-                    console.log(data.data.token);
-                    this.props.navigation.navigate('List', {token: data.data.token});
-                }               
+                    this.props.navigation.navigate('List', {token: data.data.token});               
             });
     };
 
-    onChangeTextInput = (email, password) => {
+    onChangeMail = (email: any) =>{
         var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        var checkPassword = /.{4,}/;
+        this.setState({email: email});
 
         if (checkEmail.test(email))
-            this.setState({validEmail:true, email:email, password:password})
+            this.setState({validEmail:true});
         else
-            this.setState({validEmail:false, email:email, password:password})
+            this.setState({validEmail:false});
+
+    }
+
+    onChangePassword = (password: any) => {
+        var checkPassword = /.{4,}/; 
+        this.setState({password: password});
+        
         if (checkPassword.test(password))
-            this.setState({validPassword:true, email:email, password:password});
+            this.setState({validPassword:true});
         else
-            this.setState({validPassword:false, email:email, password:password});
-        if (checkEmail.test(email) && checkPassword.test(password))
-            this.setState({validEmail:true, validPassword:true, email:email, password:password});
-    };
+            this.setState({validPassword:false});
+    }
      
     render(){
         return(
-            <View style={{justifyContent: 'center', height: 300}}>
-                <Card>
-                    <CardSection>
-                        <View style={styles.containerStyle}>
-                            <Text style={styles.textStyle}>E-mail: </Text>
-                            <View style={{flex: 1}}>
-                                <TextInput
-                                    placeholder="user@gmail.com"
-                                    value={this.state.email}
-                                    onChangeText={ email => this.onChangeTextInput(email, this.state.password)}
-                                    style={this.state.validEmail? styles.InputValidStyle:styles.InputInvalidStyle}
-                                />
-                                <Text style={(this.state.validEmail)? styles.validStyle:styles.invalidStyle} >Invalid E-mail !</Text>    
-                            </View>    
-                        </View>
-                    </CardSection>
-                    <CardSection>
-                        <View style={styles.containerStyle}>
-                            <Text style={styles.textStyle} >Password: </Text>
-                            <View style={{flex: 1}}>
-                                <TextInput
-                                    secureTextEntry
-                                    placeholder="password"
-                                    value={this.state.password}
-                                    onChangeText={password => this.onChangeTextInput(this.state.email, password)}
-                                    style={this.state.validPassword? styles.InputValidStyle : styles.InputInvalidStyle}
-                                />
-                                <Text style={this.state.validPassword? styles.validStyle:styles.invalidStyle} >Invalid Password !</Text> 
-                            </View>    
-                        </View>
-                    </CardSection>
-                </Card>
-                <View style={{marginTop: 10, height:50}}>
+            <Card>
+                <Field
+                    field="Login"
+                    secure={false}
+                    placeholder="user@gmail.com"
+                    value={this.state.email}
+                    onChangeText={this.onChangeMail}
+                    valid={this.state.validEmail}
+                    invalid="Invalid E-mail !" >
+                </Field>
+                <Field
+                    field="Password"
+                    secure={true}
+                    placeholder="password"
+                    value={this.state.password}
+                    onChangeText={this.onChangePassword}
+                    valid={this.state.validPassword}
+                    invalid="Invalid Password !">
+                </Field>
+                <View style={{marginTop: 10, height:50 }}>
                     <Button 
                         onPress={() => this.onPressButton()}
                         loading={this.state.loading}
-                        valid={this.state.validEmail&this.state.validPassword}
-                    >
+                        valid={this.state.validEmail&this.state.validPassword}>
                         Login
                     </Button>
                 </View>
-            </View>
+            </Card>
         )
-    };
-};
-
-export default Login;
-
-const styles: any = {
-    containerStyle:{
-        justifyContent:'flex-start', 
-        flexDirection:'row', 
-        alignItems:'center', 
-        flex: 1, 
-        marginLeft: 10, 
-        marginRight: 10 
-    },
-    InputInvalidStyle:{
-        paddingLeft:5, 
-        fontSize:17, 
-        height: 39,
-        borderRadius: 5, 
-        borderColor: '#cc0000', 
-        //borderColor: '#fff',    
-        //backgroundColor: '#FFA4A4',
-        borderWidth: 0.5 
-    },
-    InputValidStyle:{
-        paddingLeft:10, 
-        fontSize:17,  
-        height: 40,
-        borderRadius: 5, 
-        borderColor: '#FFF', 
-        borderWidth: 0.5 
-    },
-    textStyle:{
-        fontSize: 17, 
-        width: 90, 
-        paddingBottom: 23,
-        fontWeight: 'bold'
-    },
-    invalidStyle:{
-        fontSize: 13,
-        marginTop: 4, 
-        color: '#cc0000'
-    },
-    validStyle:{
-        fontSize: 13,
-        marginTop: 4,
-        color: '#fff'       
     }
 }
+
+export default Login;

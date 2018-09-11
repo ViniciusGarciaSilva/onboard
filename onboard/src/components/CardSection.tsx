@@ -22,5 +22,3 @@ const styles: any = {
 }
 
 export default CardSection;
-
-// borderColor: '#F3866E', 

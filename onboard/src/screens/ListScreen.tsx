@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Text, FlatList, View } from 'react-native';
 import Card from '../components/Card';
 import CardList from '../components/CardList'
+import ActionButton from 'react-native-action-button';
 
 class List extends Component {
     constructor(props){
@@ -15,8 +16,12 @@ class List extends Component {
             page: 1
         }
     }
+    
+    onPressButton = () =>{
+        this.props.navigation.navigate('CreateUser',{token: this.props.navigation.state.params.token});
+    }
 
-    onPressButton = (item: any) => {
+    onPressUser = (item: any) => {
         console.log('ListScreen/onPressButton -> item:', item)
         this.props.navigation.navigate('Detail', {token: this.props.navigation.state.params.token, id: item.id});
     } 
@@ -65,7 +70,7 @@ class List extends Component {
                 <FlatList
                     data={this.state.data.data}
                     renderItem={({item}) => 
-                        <CardList onPress={() => this.onPressButton(item)} item={item}>  
+                        <CardList onPress={() => this.onPressUser(item)} item={item}>  
                             <Text style={styles.nameStyle}> {item.name} </Text>
                             <Text style={styles.roleStyle}> {item.role} </Text> 
                         </CardList>
@@ -74,6 +79,7 @@ class List extends Component {
                     onEndReached={this.handleLoadMore}
                     onEndReachedThreshold={.3}
                 />
+                <ActionButton buttonColor="#27D7F0" onPress={() => this.onPressButton()}/>
             </Card>
         );
     }

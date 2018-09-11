@@ -32,7 +32,7 @@ class CreateUser extends Component {
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJJZCI6NTF9LCJpYXQiOjE1MzY2OTA3MDUsImV4cCI6MTUzNjY5NDMwNX0.7YW5JGArrEI4XW3uHsQclWvivHPUrmTYPf7JrCE3974'//this.props.navigation.state.params.token
+                    Authorization: this.props.navigation.state.params.token
                 },
                 body: JSON.stringify({
                     "name": this.state.name,

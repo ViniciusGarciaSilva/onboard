@@ -1,12 +1,18 @@
-import React from 'react'
-import { View } from 'react-native'
+import React, { Component } from 'react';
+import { TouchableOpacity } from 'react-native';
 
-const CardSection = (props) => {
-    return (
-        <View style={ styles.containerStyle }>
-            {props.children}
-        </View>
-    );
+class CardList extends Component {
+
+    render(){
+        return (
+            <TouchableOpacity 
+                onPress={this.props.onPress} 
+                style={ styles.containerStyle }
+            >
+                {this.props.children}
+            </TouchableOpacity>
+        );
+    }   
 };
 
 const styles: any = {
@@ -21,4 +27,4 @@ const styles: any = {
     }
 }
 
-export default CardSection;
+export default CardList;

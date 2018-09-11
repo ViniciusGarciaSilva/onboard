@@ -29,21 +29,27 @@ const styles: any = {
         flex: 1,
         backgroundColor: '#27D7F0',
         borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#FFF',
+        borderWidth: 0,
         marginLeft: 10,
         marginRight: 10,
         justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        elevation: 1
     },
     buttonDisabled: {  
         flex: 1,
         backgroundColor: '#CFCFCF',
         borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#FFF',
+        borderWidth: 0,
         marginLeft: 10,
         marginRight: 10,
         justifyContent: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.1,
+        elevation: 1
     }
 }
 

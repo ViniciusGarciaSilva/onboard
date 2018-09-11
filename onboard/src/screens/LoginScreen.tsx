@@ -5,7 +5,7 @@ import Card from '../components/Card';
 import CardSection from '../components/CardSection'
 
 class Login extends Component {
-    constructor(props){
+    constructor(props: any){
         super(props);
         this.state = {
             email: 'admin@taqtile.com',
@@ -53,10 +53,8 @@ class Login extends Component {
                 {
                     console.log(data.data.token);
                     this.props.navigation.navigate('List', {token: data.data.token});
-                }
-                                   
+                }               
             });
-         
     };
 
     onChangeTextInput = (email, password) => {
@@ -145,7 +143,7 @@ const styles: any = {
         borderWidth: 0.5 
     },
     InputValidStyle:{
-        paddingLeft:5, 
+        paddingLeft:10, 
         fontSize:17,  
         height: 40,
         borderRadius: 5, 
@@ -155,7 +153,8 @@ const styles: any = {
     textStyle:{
         fontSize: 17, 
         width: 90, 
-        paddingBottom: 23
+        paddingBottom: 23,
+        fontWeight: 'bold'
     },
     invalidStyle:{
         fontSize: 13,
@@ -165,6 +164,6 @@ const styles: any = {
     validStyle:{
         fontSize: 13,
         marginTop: 4,
-        color: '#fff'
+        color: '#fff'       
     }
 }

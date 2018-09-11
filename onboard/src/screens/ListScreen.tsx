@@ -7,15 +7,36 @@ class List extends Component {
     constructor(props){
         super(props);
         this.state = {
-            data: []
+            data: {
+                data: [],
+                pagination: {},
+                __proto__: null
+            },
+            page: 1
         }
+    }
+
+    onPressButton = (item: any) => {
+        console.log('ListScreen/onPressButton -> item:', item)
+        this.props.navigation.navigate('Detail', {token: this.props.navigation.state.params.token, id: item.id});
+    } 
+
+    handleLoadMore = () => {
+        var page = this.state.page;
+        page ++;
+        this.setState( {page: page} )
+        this.getUsers(page,5)
+        .then( (data)  => {
+            console.log(data);
+            this.setState( { data:{data:[...this.state.data.data,...data.data],pagination:data.pagination,__proto__:data.__proto__} } );
+        })
     }
 
     componentDidMount = () => {
         this.getUsers(0,10)
         .then( (data) => {
             console.log(data);
-            this.setState( {data: data} );
+            this.setState( { data:{data:[...this.state.data.data,...data.data],pagination:data.pagination,__proto__:data.__proto__} } );
         })
     }
 
@@ -30,7 +51,7 @@ class List extends Component {
             })
             .then((response) => response.json())
             .then((responseJson) => {
-                console.log('responseJson: ', responseJson);
+                console.log('ListScreen/getUsers -> responseJson: : ', responseJson);
                 return (responseJson);
             })
             .catch((error) => {
@@ -44,14 +65,15 @@ class List extends Component {
                 <FlatList
                     data={this.state.data.data}
                     renderItem={({item}) => 
-                        <CardList>  
+                        <CardList onPress={() => this.onPressButton(item)} item={item}>  
                             <Text style={styles.nameStyle}> {item.name} </Text>
-                            <Text style={styles.roleStyle}> {item.role} </Text>  
+                            <Text style={styles.roleStyle}> {item.role} </Text> 
                         </CardList>
                     }
                     keyExtractor={ ( item ) => String(item.id)}
+                    onEndReached={this.handleLoadMore}
+                    onEndReachedThreshold={.3}
                 />
-
             </Card>
         );
     }

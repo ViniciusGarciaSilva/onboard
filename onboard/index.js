@@ -1,12 +1,14 @@
 import { AppRegistry} from 'react-native';
-import Login from './src/screens/LoginScreen';
 import { createStackNavigator } from 'react-navigation';
-import List from './src/screens/ListScreen'
+import Login from './src/screens/LoginScreen';
+import List from './src/screens/ListScreen';
+import Detail from './src/screens/DetailScreen';
 
 const App = createStackNavigator(
     {
-        Login: { screen: Login},
-        List: { screen: List}
+        Login: { screen: Login },
+        List: { screen: List },
+        Detail: { screen: Detail }
     },
     {
         initialRouteName: 'Login',

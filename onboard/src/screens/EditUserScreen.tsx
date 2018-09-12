@@ -3,20 +3,21 @@ import Crud from '../components/Crud';
 
 export interface Props {
     navigation: any;
+    id: string;
 }
 
-class CreateUser extends Component<Props> {
+class EditUser extends Component<Props> {
     render() {
         return (
             <Crud 
                 authorization={this.props.navigation.state.params.token} 
-                type='POST'
-                id=''
+                type='Put'
+                id={this.props.id}
                 nextStep={() => this.props.navigation.navigate('List')}
-                button="Create" 
+                button="Edit" 
             />
         )
     }
 }
 
-export default CreateUser;
+export default EditUser;

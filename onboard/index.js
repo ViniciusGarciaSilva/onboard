@@ -1,22 +1,24 @@
-import { AppRegistry} from 'react-native';
+import { AppRegistry } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Login from './src/screens/LoginScreen';
 import List from './src/screens/ListScreen';
 import Detail from './src/screens/DetailScreen';
 import CreateUser from './src/screens/CreateUserScreen';
+import EditUser from './src/screens/EditUserScreen';
 
 const App = createStackNavigator(
     {
         Login: { screen: Login },
         List: { screen: List },
         Detail: { screen: Detail },
-        CreateUser: { screen: CreateUser }
+        CreateUser: { screen: CreateUser },
+        EditUser: { screen: EditUser }
     },
     {
         initialRouteName: 'Login',
         navigationOptions: {
             title: 'Onboard',
-            headerStyle:{
+            headerStyle: {
                 backgroundColor: '#27D7F0',
                 height: 60,
                 paddingTop: 15,
@@ -25,7 +27,7 @@ const App = createStackNavigator(
                 shadowOpacity: 0.2,
                 elevation: 2
             },
-            headerTitleStyle:{
+            headerTitleStyle: {
                 fontWeight: 'bold',
                 fontSize: 20
             }
@@ -33,4 +35,4 @@ const App = createStackNavigator(
     }
 );
 
-AppRegistry.registerComponent('onboard', () => App );
+AppRegistry.registerComponent('onboard', () => App);

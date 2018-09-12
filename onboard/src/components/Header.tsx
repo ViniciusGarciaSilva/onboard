@@ -1,17 +1,17 @@
 import React from 'react';
-import {Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 
 const Header = () => {
     const { textStyle, viewStyle } = styles;
     return (
         <View style={viewStyle}>
-        <Text style={textStyle}>Onboard!</Text>
+            <Text style={textStyle}>Onboard!</Text>
         </View>
     )
 }
 
 const styles: any = {
-    viewStyle:{
+    viewStyle: {
         backgroundColor: '#27D7F0',
         justifyContent: 'center',
         alignItems: 'center',
@@ -21,9 +21,9 @@ const styles: any = {
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
         elevation: 2,
-        position: 'relative'        
+        position: 'relative'
     },
-    textStyle:{
+    textStyle: {
         fontSize: 20
     }
 };

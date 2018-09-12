@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react';
 import { View } from 'react-native';
 
-const Card = (props: {children: ReactNode}) => {
+const Card = (props: { children: ReactNode }) => {
     return (
-        <View style={ styles.containerStyle }>
+        <View style={styles.containerStyle}>
             {props.children}
         </View>
     );

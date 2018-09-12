@@ -26,9 +26,9 @@ class Detail extends Component<Props, State> {
 
     componentDidMount = () => {
         this.getUser()
-            .then((data) => {
-                console.log('DetailScreen/ComponentDidMount -> Response: ', data);
-                this.setState({ user: data.data });
+            .then((response) => {
+                console.log('DetailScreen/ComponentDidMount -> Response: ', response);
+                this.setState({ user: response.data });
             })
     }
 

@@ -4,6 +4,7 @@ import Card from '../components/Card';
 import Field from '../components/Field';
 import Button from '../components/Button';
 import Picker from '../components/Picker';
+import { user } from '../components/User'
 
 export interface Props {
   authorization: any;
@@ -14,10 +15,7 @@ export interface Props {
 }
 
 interface State {
-  name: string;
-  password: string;
-  email: string;
-  role: string;
+  user: user,
   validName: boolean;
   validEmail: boolean;
   validPassword: boolean;
@@ -32,10 +30,16 @@ class Crud extends Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      role: '',
+      user: {
+        id: 0,
+        name: '',
+        password: '',
+        email: '',
+        active: false,
+        role: '',
+        createdAt: '',
+        updatedAt: '',
+      },
       validName: false,
       validEmail: false,
       validPassword: false,
@@ -50,8 +54,6 @@ class Crud extends Component<Props, State> {
     };
   }
 
-
-
   createUser = () => {
     return fetch('https://tq-template-server-sample.herokuapp.com/users' + this.props.id, {
       method: this.props.type,
@@ -61,10 +63,10 @@ class Crud extends Component<Props, State> {
         Authorization: this.props.authorization
       },
       body: JSON.stringify({
-        "name": this.state.name,
-        "password": this.state.password,
-        "email": this.state.email,
-        "role": this.state.role
+        "name": this.state.user.name,
+        "password": this.state.user.password,
+        "email": this.state.user.email,
+        "role": this.state.user.role
       }),
     })
       .then((response) => response.json())
@@ -76,18 +78,23 @@ class Crud extends Component<Props, State> {
       })
   }
 
-  onChangeRole = (role: any) => {
-    this.setState({ role: role });
+  onChangeRole = (role: string) => {
+    const newUser = this.state.user;
+    newUser.role = role;
+    this.setState({ user: newUser });
+
     if (role == 'admin' || role == 'user')
       this.setState({ validRole: true });
     else
       this.setState({ validRole: false });
-    console.log("state.role: ", this.state.role, "role:", role);
+    console.log("state.role: ", this.state.user.role, "role:", role);
   }
 
-  onChangeName = (name: any) => {
+  onChangeName = (name: string) => {
     var checkName = /^[a-zA-Z]+$/;
-    this.setState({ name: name });
+    const newUser = this.state.user;
+    newUser.name = name;
+    this.setState({ user: newUser });
 
     if (checkName.test(name))
       this.setState({ validName: true });
@@ -95,21 +102,24 @@ class Crud extends Component<Props, State> {
       this.setState({ validName: false });
   }
 
-  onChangeEmail = (email: any) => {
+  onChangeEmail = (email: string) => {
     var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.setState({ email: email });
+    const newUser = this.state.user;
+    newUser.email = email;
+    this.setState({ user: newUser });
 
     if (checkEmail.test(email))
       this.setState({ validEmail: true });
     else
       this.setState({ validEmail: false });
-
   }
 
-  onChangePassword = (password: any) => {
+  onChangePassword = (password: string) => {
     var checkPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-    this.setState({ password: password });
-
+    const newUser = this.state.user;
+    newUser.password = password;
+    this.setState({ user: newUser });
+    
     if (checkPassword.test(password))
       this.setState({ validPassword: true });
     else
@@ -138,7 +148,7 @@ class Crud extends Component<Props, State> {
           field="Name"
           secure={false}
           placeholder="name"
-          value={this.state.name}
+          value={this.state.user.name}
           onChangeText={this.onChangeName}
           valid={this.state.validName}
           invalid="Invalid Name !" >
@@ -147,7 +157,7 @@ class Crud extends Component<Props, State> {
           field="E-mail"
           secure={false}
           placeholder="e-mail"
-          value={this.state.email}
+          value={this.state.user.email}
           onChangeText={this.onChangeEmail}
           valid={this.state.validEmail}
           invalid="Invalid E-mail !">
@@ -156,7 +166,7 @@ class Crud extends Component<Props, State> {
           field="Password"
           secure={true}
           placeholder="password"
-          value={this.state.password}
+          value={this.state.user.password}
           onChangeText={this.onChangePassword}
           valid={this.state.validPassword}
           invalid="Invalid Password !">

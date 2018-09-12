@@ -6,16 +6,16 @@ export interface Props {
 }
 
 class CardList extends Component<Props> {
-    render(){
+    render() {
         return (
-            <TouchableOpacity 
-                onPress={this.props.onPress} 
-                style={ styles.containerStyle }
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={styles.containerStyle}
             >
                 {this.props.children}
             </TouchableOpacity>
         );
-    }   
+    }
 };
 
 const styles: any = {

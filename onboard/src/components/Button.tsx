@@ -1,23 +1,23 @@
-import React, {Component} from 'react';
-import {Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import React, { Component } from 'react';
+import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 export interface Props {
-    onPress():void;
+    onPress(): void;
     valid: boolean;
     loading: boolean;
 }
- 
+
 class Button extends Component<Props> {
-    render(){
-        const indicator = <ActivityIndicator size='large' color='#FFF'/>;
+    render() {
+        const indicator = <ActivityIndicator size='large' color='#FFF' />;
         const text = <Text style={styles.textStyle}>{this.props.children}</Text>;
 
-        return(
-            <TouchableOpacity   
-                onPress={this.props.onPress} 
-                style={this.props.valid? styles.buttonEnabled : styles.buttonDisabled}
-                disabled={this.props.valid? false : true}>
-                {this.props.loading? indicator : text}
+        return (
+            <TouchableOpacity
+                onPress={this.props.onPress}
+                style={this.props.valid ? styles.buttonEnabled : styles.buttonDisabled}
+                disabled={this.props.valid ? false : true}>
+                {this.props.loading ? indicator : text}
             </TouchableOpacity>
         );
     };
@@ -30,7 +30,7 @@ const styles: any = {
         fontWeight: '600',
         alignSelf: 'center'
     },
-    buttonEnabled: {  
+    buttonEnabled: {
         flex: 1,
         backgroundColor: '#27D7F0',
         borderRadius: 5,
@@ -41,7 +41,7 @@ const styles: any = {
         shadowOpacity: 0.1,
         elevation: 1
     },
-    buttonDisabled: {  
+    buttonDisabled: {
         flex: 1,
         backgroundColor: '#CFCFCF',
         borderRadius: 5,

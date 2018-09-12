@@ -3,13 +3,20 @@ import { Text, FlatList, View } from 'react-native';
 import Card from '../components/Card';
 import CardList from '../components/CardList'
 import ActionButton from 'react-native-action-button';
+import { user } from '../components/User'
 
 export interface Props {
     navigation: any;
 }
 
 interface State {
-    data: any;
+    pagination: {
+        page: number,
+        window: number,
+        total: number,
+        totalPages: number
+    };
+    users: user[]; 
     page: number;
 }
 
@@ -17,11 +24,13 @@ class List extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            data: {
-                data: [],
-                pagination: {},
-                __proto__: null
+            pagination:{
+                page: 0,
+                window: 0,
+                total: 0,
+                totalPages: 0    
             },
+            users: [],
             page: 1
         }
     }
@@ -40,17 +49,17 @@ class List extends Component<Props, State> {
         page++;
         this.setState({ page: page })
         this.getUsers(page, 5)
-            .then((data) => {
-                console.log(data);
-                this.setState({ data: { data: [...this.state.data.data, ...data.data], pagination: data.pagination, __proto__: data.__proto__ } });
+            .then((response) => {
+                console.log(response);
+                this.setState({ users: [...this.state.users, ...response.data], pagination: response.pagination});
             })
     }
 
     componentDidMount = () => {
         this.getUsers(0, 10)
-            .then((data) => {
-                console.log(data);
-                this.setState({ data: { data: [...this.state.data.data, ...data.data], pagination: data.pagination, __proto__: data.__proto__ } });
+            .then((response) => {
+                console.log(response);
+                this.setState({ users: [...this.state.users, ...response.data], pagination: response.pagination});           
             })
     }
 
@@ -77,7 +86,7 @@ class List extends Component<Props, State> {
         return (
             <Card>
                 <FlatList
-                    data={this.state.data.data}
+                    data={this.state.users}
                     renderItem={({ item }: any) =>
                         <CardList onPress={() => this.onPressUser(item)}>
                             <Text style={styles.nameStyle}> {item.name} </Text>

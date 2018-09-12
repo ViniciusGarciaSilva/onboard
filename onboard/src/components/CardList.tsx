@@ -1,8 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { TouchableOpacity } from 'react-native';
 
-class CardList extends Component {
+export interface Props {
+    onPress(): void;
+}
 
+class CardList extends Component<Props> {
     render(){
         return (
             <TouchableOpacity 

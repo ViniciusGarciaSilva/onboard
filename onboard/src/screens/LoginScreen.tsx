@@ -4,7 +4,20 @@ import Button from '../components/Button';
 import Card from '../components/Card';
 import Field from '../components/Field'
 
-class Login extends Component {
+export interface Props {
+    navigation: any;
+}
+
+interface State {
+    password: string;
+    email: string;
+    loading: boolean;
+    validEmail: boolean;
+    validPassword: boolean;
+    data: any;
+}   
+
+class Login extends Component<Props, State> {
     constructor(props: any){
         super(props);
         this.state = {
@@ -97,7 +110,7 @@ class Login extends Component {
                     <Button 
                         onPress={() => this.onPressButton()}
                         loading={this.state.loading}
-                        valid={this.state.validEmail&this.state.validPassword}>
+                        valid={this.state.validEmail && this.state.validPassword}>
                         Login
                     </Button>
                 </View>

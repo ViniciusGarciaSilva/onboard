@@ -5,8 +5,27 @@ import Field from '../components/Field';
 import Button from '../components/Button';
 import Picker from '../components/Picker';
 
-class CreateUser extends Component {
-    constructor(props){
+export interface Props {
+    navigation: any;
+}
+
+interface State {
+    name: string;
+    password: string;
+    email: string;
+    role: string;
+    validName: boolean;
+    validEmail: boolean;
+    validPassword: boolean;
+    validRole: boolean;
+    loading: boolean;
+    pickerItems: any;
+    data: any;
+    item: any;
+}   
+
+class CreateUser extends Component<Props, State> {
+    constructor(props: any){
         super(props);
         this.state = {
             name: '',
@@ -22,7 +41,8 @@ class CreateUser extends Component {
                 { label:'Admin', value: 'admin', },
                 { label:'User', value: 'user', },
             ],
-            data: null
+            data: null,
+            item: null
         };
     }
 
@@ -145,17 +165,15 @@ class CreateUser extends Component {
                     placeholder={{
                         label: 'select a role',
                         value: null,
-                    }}>
-                </Picker>
-                 
+                }}/>
                 <View style={{marginTop: 10, height:50 }}>
                     <Button 
                         onPress={() => this.onPressButton()}
                         loading={this.state.loading}
                         valid={
-                            this.state.validEmail&
-                            this.state.validPassword&
-                            this.state.validName&
+                            this.state.validEmail &&
+                            this.state.validPassword &&
+                            this.state.validName &&
                             this.state.validRole}>
                         Create
                     </Button>

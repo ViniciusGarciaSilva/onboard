@@ -2,7 +2,17 @@ import React, {Component} from 'react';
 import { View, Text, TextInput } from 'react-native';
 import CardSection from './CardSection';
 
-class Field extends Component {
+export interface Props {
+    onChangeText(value: string): void;
+    secure: boolean;
+    placeholder: string;
+    value: string;
+    valid: boolean;
+    invalid: string;
+    field: string;
+}
+
+class Field extends Component<Props> {
     render(){
         return (
             <CardSection>

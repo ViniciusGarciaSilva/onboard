@@ -3,16 +3,28 @@ import { View, Text, StyleSheet } from 'react-native';
 import CardSection from './CardSection';
 import RNPickerSelect from 'react-native-picker-select';
 
-class Picker extends Component {
-    constructor(props) {
-        super(props);
+export interface Props {
+    onValueChange(value:string): void;
+    pickerItems: any;
+    placeholder:any;
+    field: string;
+    secure: boolean;
+    item: any;
+}
 
+interface State {
+    value: any;
+}
+
+class Picker extends Component<Props, State> {
+    constructor(props: any) {
+        super(props);
         this.state = {
             value: null
         }
     }
 
-    onValueChange = (value: any) => {
+    onValueChange = (value: string) => {
         this.setState({ value:value });
         this.props.onValueChange(value);
     }
@@ -26,7 +38,7 @@ class Picker extends Component {
                         <RNPickerSelect
                             items={this.props.pickerItems}
                             placeholder={this.props.placeholder}
-                            onValueChange={value => this.onValueChange(value)}
+                            onValueChange={ (value:string) => this.onValueChange(value)}
                             style={{ ...pickerSelectStyles }}  
                             value={this.state.value}>
                         </RNPickerSelect>
@@ -38,7 +50,6 @@ class Picker extends Component {
 }
 
 export default Picker;
-
 
 const styles: any = {
     containerStyle:{

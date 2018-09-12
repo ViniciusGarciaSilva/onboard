@@ -4,8 +4,17 @@ import Card from '../components/Card';
 import CardList from '../components/CardList'
 import ActionButton from 'react-native-action-button';
 
-class List extends Component {
-    constructor(props){
+export interface Props {
+    navigation: any;
+}
+
+interface State {
+    data: any;
+    page: number;
+}   
+
+class List extends Component<Props,State> {
+    constructor(props: any){
         super(props);
         this.state = {
             data: {
@@ -69,13 +78,13 @@ class List extends Component {
             <Card>
                 <FlatList
                     data={this.state.data.data}
-                    renderItem={({item}) => 
-                        <CardList onPress={() => this.onPressUser(item)} item={item}>  
+                    renderItem={({item}:any) => 
+                        <CardList onPress={() => this.onPressUser(item)}>  
                             <Text style={styles.nameStyle}> {item.name} </Text>
                             <Text style={styles.roleStyle}> {item.role} </Text> 
                         </CardList>
                     }
-                    keyExtractor={ ( item ) => String(item.id)}
+                    keyExtractor={ ( item:{id:number} ) => String(item.id)}
                     onEndReached={this.handleLoadMore}
                     onEndReachedThreshold={.3}
                 />

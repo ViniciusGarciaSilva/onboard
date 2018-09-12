@@ -3,8 +3,16 @@ import { View, Text } from 'react-native';
 import CardSection from '../components/CardSection';
 import Card from '../components/Card';
 
-class Detail extends Component {
-    constructor(props){
+export interface Props {
+    navigation: any;
+}
+
+interface State {
+    user: any;
+}   
+
+class Detail extends Component<Props, State> {
+    constructor(props: any){
         super(props);
         this.state = {
             user: {}

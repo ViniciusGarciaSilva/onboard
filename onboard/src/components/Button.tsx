@@ -1,8 +1,13 @@
 import React, {Component} from 'react';
 import {Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 
-class Button extends Component {
-
+export interface Props {
+    onPress():void;
+    valid: boolean;
+    loading: boolean;
+}
+ 
+class Button extends Component<Props> {
     render(){
         const indicator = <ActivityIndicator size='large' color='#FFF'/>;
         const text = <Text style={styles.textStyle}>{this.props.children}</Text>;

@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import CardSection from './components/CardSection';
 import Card from './components/Card';
 import ActionButton from 'react-native-action-button';
+import { readUser } from '../domain/User'
 
 export interface Props {
     navigation: any;
@@ -25,29 +26,10 @@ class Detail extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        this.getUser()
-            .then((response) => {
+        readUser(this.props.navigation.state.params.id , this.props.navigation.state.params.token)
+            .then( (response: any) => {
                 console.log('DetailScreen/ComponentDidMount -> Response: ', response);
-                this.setState({ user: response.data });
-            })
-    }
-
-    getUser = () => {
-        return fetch('https://tq-template-server-sample.herokuapp.com/users/' + this.props.navigation.state.params.id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: this.props.navigation.state.params.token
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('DetailScreen/getUser -> responseJson: ', responseJson);
-                return (responseJson);
-            })
-            .catch((error) => {
-                console.error(error);
+                this.setState({ user: response.user });
             })
     }
 

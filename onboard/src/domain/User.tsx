@@ -1,4 +1,4 @@
-import { edit, create } from '../data/Crud'
+import { edit, create, read, get } from '../data/Crud'
 
 export type user = {
     id: number;
@@ -11,10 +11,9 @@ export type user = {
     updatedAt: string;
 }
 
-export function createUser(user: user, token: string) { //{result: boolean, message: string} {
-    return create(user, token).
-    then((response: any) => {
-        console.log('User/createUser --> ', response);
+export function createUser(user: user, token: string): any {
+    return create(user, token)
+    .then((response: any) => {
         if(response.data==null&&response.errors!=null)
             return ({result: false, message: response.errors[0].message });
         if(response.data!=null)
@@ -23,11 +22,35 @@ export function createUser(user: user, token: string) { //{result: boolean, mess
     });
 }
 
-export function editUser(user: user, token: string): any { //{result: boolean, message: string} {
-    edit(user, token).then((response: any) => {
-        if(response.data==null)
+export function editUser(user: user, token: string): any {
+    return edit(user, token)
+    .then((response: any) => {
+        if(response.data==null&&response.errors!=null)
             return ({result: false, message: response.errors[0].message });
-        else
-            return ({result: true, message: "User Edited!" });
+        if(response.data!=null)
+            return ({result: true, message: "User Edited" });
+        return ({result: false, message: "ERROR" });
+        });
+}
+
+export function readUser(id: number, token: string): any {
+    return read(id, token)
+    .then((response: any) => {
+        if(response.data==null&&response.errors!=null)
+            return ({result: false, message: response.errors[0].message, user: null });
+        if(response.data!=null)
+            return ({result: true, message: "User Edited", user: response.data });
+        return ({result: false, message: "ERROR", user: null });
     });
+}
+
+export function getUsers(page: number, window: number, token: string): any {
+    return get(page, window, token)
+    .then((response: any) => {
+        if(response.data==null&&response.errors!=null)
+            return ({result: false, message: response.errors[0].message, users: null });
+        if(response.data!=null)
+            return ({result: true, message: "Users!", user: response.data });
+        return ({result: false, message: "ERROR", users: null });
+    });     
 }

@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
-import Card from '../components/Card';
-import Field from '../components/Field';
-import Button from '../components/Button';
-import Picker from '../components/Picker';
-import { user } from '../components/User'
+import { View } from 'react-native';
+import Card from './components/Card';
+import Field from './components/Field';
+import Button from './components/Button';
+import Picker from './components/Picker';
+import { user, createUser, editUser } from '../domain/User'
 
 export interface Props {
-  authorization: any;
+  token: any;
   type: string;
   id: string;
   nextStep(): void;
@@ -52,30 +52,6 @@ class Crud extends Component<Props, State> {
       data: null,
       item: null
     };
-  }
-
-  createUser = () => {
-    return fetch('https://tq-template-server-sample.herokuapp.com/users' + this.props.id, {
-      method: this.props.type,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: this.props.authorization
-      },
-      body: JSON.stringify({
-        "name": this.state.user.name,
-        "password": this.state.user.password,
-        "email": this.state.user.email,
-        "role": this.state.user.role
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return (responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
   }
 
   onChangeRole = (role: string) => {
@@ -128,17 +104,25 @@ class Crud extends Component<Props, State> {
 
   onPressButton = () => {
     this.setState({ loading: true });
-    this.createUser()
-      .then((response) => {
-        console.log(response);
-        this.setState({ loading: false, data: response });
-        if (response.data == null)
-          alert(response.errors[0].message);
-        else {
-          alert("Success!!");
-          this.props.nextStep();
-        }
-      })
+    
+    if(this.props.type == 'create')
+      console.log('Crud/onPressButton -> creating user!');
+      createUser(this.state.user, this.props.token)
+      .then( (response: any) => {
+        console.log('Crud/onPressButton ->' ,response);
+        alert(response.message);
+        this.setState({ loading: false });
+        if(response.result)
+          this.props.nextStep()
+      });
+    if(this.props.type == 'edit')
+      editUser(this.state.user, this.props.token)
+      .then( (response: any) => {
+        alert(response.message);
+        this.setState({ loading: false });
+        if(response.result)
+          this.props.nextStep()
+      });
   }
 
   render() {

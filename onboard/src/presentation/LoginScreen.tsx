@@ -1,72 +1,59 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Button from '../components/Button';
-import Card from '../components/Card';
-import Field from '../components/Field'
+import Button from './components/Button';
+import Card from './components/Card';
+import Field from './components/Field'
+import { user } from '../domain/User'
+import { checkCredentials } from '../data/CheckCredentials'
 
 export interface Props {
     navigation: any;
 }
 
 interface State {
-    password: string;
-    email: string;
+    user: user;
     loading: boolean;
     validEmail: boolean;
-    validPassword: boolean;
-    data: any;
+    validPassword: boolean; 
 }
 
 class Login extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            email: 'admin@taqtile.com',
-            password: '1111',
+            user: {
+                id: 0,
+                name: '',
+                password: '1111',
+                email: 'admin@taqtile.com',
+                active: false,
+                role: '',
+                createdAt: '',
+                updatedAt: '',
+            },
             loading: false,
             validEmail: true,
             validPassword: true,
-            data: null
         };
-    }
-
-    checkCredentials = () => {
-        return fetch('https://tq-template-server-sample.herokuapp.com/authenticate', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                'password': this.state.password,
-                'email': this.state.email,
-                'rememberMe': 'false',
-            }),
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                return (responseJson);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
     }
 
     onPressButton = () => {
         this.setState({ loading: true });
-        this.checkCredentials()
-            .then((data) => {
-                this.setState({ data: data, loading: false });
-                if (data.data == null)
-                    alert(data.errors[0].message);
+        checkCredentials(this.state.user.email, this.state.user.password)
+            .then((response: any) => {
+                this.setState({ user: response.data.user, loading: false });
+                if (response.data == null)
+                    alert(response.errors[0].message);
                 else
-                    this.props.navigation.navigate('List', { token: data.data.token });
+                    this.props.navigation.navigate('List', { token: response.data.token });
             });
     };
 
-    onChangeMail = (email: any) => {
+    onChangeMail = (email: string) => {
         var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        this.setState({ email: email });
+        const newUser = this.state.user;
+        newUser.email = email;
+        this.setState({ user: newUser });
 
         if (checkEmail.test(email))
             this.setState({ validEmail: true });
@@ -75,9 +62,11 @@ class Login extends Component<Props, State> {
 
     }
 
-    onChangePassword = (password: any) => {
+    onChangePassword = (password: string) => {
         var checkPassword = /.{4,}/;
-        this.setState({ password: password });
+        const newUser = this.state.user;
+        newUser.password = password;
+        this.setState({ user: newUser });
 
         if (checkPassword.test(password))
             this.setState({ validPassword: true });
@@ -92,7 +81,7 @@ class Login extends Component<Props, State> {
                     field="Login"
                     secure={false}
                     placeholder="user@gmail.com"
-                    value={this.state.email}
+                    value={this.state.user.email}
                     onChangeText={this.onChangeMail}
                     valid={this.state.validEmail}
                     invalid="Invalid E-mail !" >
@@ -101,7 +90,7 @@ class Login extends Component<Props, State> {
                     field="Password"
                     secure={true}
                     placeholder="password"
-                    value={this.state.password}
+                    value={this.state.user.password}
                     onChangeText={this.onChangePassword}
                     valid={this.state.validPassword}
                     invalid="Invalid Password !">

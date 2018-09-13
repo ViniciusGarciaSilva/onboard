@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react';
+import React, { Component } from 'react';
 import { TouchableOpacity } from 'react-native';
 
 export interface Props {

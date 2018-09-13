@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Card from './components/Card';
-import Field from './components/Field';
-import Button from './components/Button';
-import Picker from './components/Picker';
-import { user, createUser, editUser } from '../domain/User'
+import Card from '../components/Card';
+import Field from '../components/Field';
+import Button from '../components/Button';
+import Picker from '../components/Picker';
+import { user, createUser, editUser } from '../../domain/User'
+import { checkEmail, checkName, checkPassword7, checkRole} from '../../domain/Validator'
 
 export interface Props {
   token: any;
@@ -57,59 +58,32 @@ class Crud extends Component<Props, State> {
   onChangeRole = (role: string) => {
     const newUser = this.state.user;
     newUser.role = role;
-    this.setState({ user: newUser });
-
-    if (role == 'admin' || role == 'user')
-      this.setState({ validRole: true });
-    else
-      this.setState({ validRole: false });
-    console.log("state.role: ", this.state.user.role, "role:", role);
+    this.setState({ user: newUser, validName: checkRole(role) });
   }
 
   onChangeName = (name: string) => {
-    var checkName = /^[a-zA-Z]+$/;
     const newUser = this.state.user;
     newUser.name = name;
-    this.setState({ user: newUser });
-
-    if (checkName.test(name))
-      this.setState({ validName: true });
-    else
-      this.setState({ validName: false });
+    this.setState({ user: newUser, validName: checkName(name) });
   }
 
   onChangeEmail = (email: string) => {
-    var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const newUser = this.state.user;
     newUser.email = email;
-    this.setState({ user: newUser });
-
-    if (checkEmail.test(email))
-      this.setState({ validEmail: true });
-    else
-      this.setState({ validEmail: false });
+    this.setState({ user: newUser, validEmail: checkEmail(email) });
   }
 
   onChangePassword = (password: string) => {
-    var checkPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
     const newUser = this.state.user;
     newUser.password = password;
-    this.setState({ user: newUser });
-    
-    if (checkPassword.test(password))
-      this.setState({ validPassword: true });
-    else
-      this.setState({ validPassword: false });
+    this.setState({ user: newUser, validPassword: checkPassword7(password) });
   }
 
   onPressButton = () => {
     this.setState({ loading: true });
-    
     if(this.props.type == 'create')
-      console.log('Crud/onPressButton -> creating user!');
       createUser(this.state.user, this.props.token)
       .then( (response: any) => {
-        console.log('Crud/onPressButton ->' ,response);
         alert(response.message);
         this.setState({ loading: false });
         if(response.result)

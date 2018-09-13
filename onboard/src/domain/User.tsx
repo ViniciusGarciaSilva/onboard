@@ -18,7 +18,9 @@ export function createUser(user: user, token: string): any {
             return ({result: false, message: response.errors[0].message });
         if(response.data!=null)
             return ({result: true, message: "User Created" });
-        return ({result: false, message: "ERROR" });
+    })
+    .catch((error: any)=>{
+        console.log(error);
     });
 }
 
@@ -30,7 +32,10 @@ export function editUser(user: user, token: string): any {
         if(response.data!=null)
             return ({result: true, message: "User Edited" });
         return ({result: false, message: "ERROR" });
-        });
+        })
+    .catch((error: any)=>{
+        console.log(error);
+    });
 }
 
 export function readUser(id: number, token: string): any {
@@ -41,6 +46,9 @@ export function readUser(id: number, token: string): any {
         if(response.data!=null)
             return ({result: true, message: "User Edited", user: response.data });
         return ({result: false, message: "ERROR", user: null });
+    })
+    .catch((error: any)=>{
+        console.log(error);
     });
 }
 
@@ -52,5 +60,8 @@ export function getUsers(page: number, window: number, token: string): any {
         if(response.data!=null)
             return ({result: true, message: "Users!", user: response.data });
         return ({result: false, message: "ERROR", users: null });
+    })
+    .catch((error: any)=>{
+        console.log(error);
     });     
 }

@@ -1,10 +1,10 @@
 import { AppRegistry } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
-import Login from './src/presentation/LoginScreen';
-import List from './src/presentation/ListScreen';
-import Detail from './src/presentation/DetailScreen';
-import CreateUser from './src/presentation/CreateUserScreen';
-import EditUser from './src/presentation/EditUserScreen';
+import Login from './src/presentation/screens/LoginScreen';
+import List from './src/presentation/screens/ListScreen';
+import Detail from './src/presentation/screens/DetailScreen';
+import CreateUser from './src/presentation/screens/CreateUserScreen';
+import EditUser from './src/presentation/screens/EditUserScreen';
 
 const App = createStackNavigator(
     {

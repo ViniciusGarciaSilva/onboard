@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import CardSection from './components/CardSection';
-import Card from './components/Card';
+import CardSection from '../components/CardSection';
+import Card from '../components/Card';
 import ActionButton from 'react-native-action-button';
-import { readUser } from '../domain/User'
+import { readUser } from '../../domain/User'
 
 export interface Props {
     navigation: any;

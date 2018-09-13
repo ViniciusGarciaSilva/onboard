@@ -13,9 +13,12 @@ export function checkCredentials(email: string, password: string): any {
   })
       .then((response) => response.json())
       .then((responseJson) => {
+          console.log(responseJson);
           return (responseJson);
       })
-      .catch((error) => {
+      .catch((error: any) => {
           console.error(error);
+          console.log(error);
+          return (error);
       })
 }

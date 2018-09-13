@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Button from './components/Button';
-import Card from './components/Card';
-import Field from './components/Field'
-import { user } from '../domain/User'
-import { checkCredentials } from '../data/CheckCredentials'
+import Button from '../components/Button';
+import Card from '../components/Card';
+import Field from '../components/Field'
+import { user } from '../../domain/User'
+import { checkCredentials } from '../../data/Credentials'
+import { checkEmail, checkPassword4 } from '../../domain/Validator';
 
 export interface Props {
     navigation: any;
@@ -41,37 +42,27 @@ class Login extends Component<Props, State> {
         this.setState({ loading: true });
         checkCredentials(this.state.user.email, this.state.user.password)
             .then((response: any) => {
-                this.setState({ user: response.data.user, loading: false });
+                this.setState({ user: response.data.user, loading: false, validPassword:false });
                 if (response.data == null)
                     alert(response.errors[0].message);
                 else
                     this.props.navigation.navigate('List', { token: response.data.token });
-            });
+            })
+            .catch((error: any) => {
+                console.error(error);
+            })
     };
 
     onChangeMail = (email: string) => {
-        var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         const newUser = this.state.user;
         newUser.email = email;
-        this.setState({ user: newUser });
-
-        if (checkEmail.test(email))
-            this.setState({ validEmail: true });
-        else
-            this.setState({ validEmail: false });
-
+        this.setState({ user: newUser, validEmail: checkEmail(email) });
     }
 
     onChangePassword = (password: string) => {
-        var checkPassword = /.{4,}/;
         const newUser = this.state.user;
         newUser.password = password;
-        this.setState({ user: newUser });
-
-        if (checkPassword.test(password))
-            this.setState({ validPassword: true });
-        else
-            this.setState({ validPassword: false });
+        this.setState({ user: newUser, validPassword: checkPassword4(password) });
     }
 
     render() {

@@ -32,7 +32,7 @@ function createdit(user: user, type: string, token: string):any  {
       return (responseJson);
     })
     .catch((error) => {
-      //console.log('CrudData/crud error ->' ,error);
+      console.log(error);
       return error;
     })
   )
@@ -54,6 +54,7 @@ export function read(id: number, token: string): any{
     })
     .catch((error) => {
         console.error(error);
+        return error;
     })
 }
 
@@ -72,6 +73,7 @@ export function get(page: number, window: number, token: string): any{
           return (responseJson);
       })
       .catch((error) => {
-          //console.error(error);
+          console.error(error);
+          return error;
       })
 }

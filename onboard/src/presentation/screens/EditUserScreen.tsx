@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Crud from '../components/Crud';
+import Crud from './Createdit';
 
 export interface Props {
     navigation: any;
@@ -10,7 +10,7 @@ class EditUser extends Component<Props> {
     render() {
         return (
             <Crud 
-                authorization={this.props.navigation.state.params.token} 
+                token={this.props.navigation.state.params.token} 
                 type='Put'
                 id={this.props.id}
                 nextStep={() => this.props.navigation.navigate('List')}

@@ -3,20 +3,31 @@ import { View, Text } from 'react-native';
 import CardSection from '../components/CardSection';
 import Card from '../components/Card';
 import ActionButton from 'react-native-action-button';
+import { readUser } from '../../domain/User'
+import { user } from '../../domain/User'
 
 export interface Props {
     navigation: any;
 }
 
 interface State {
-    user: any;
+    user: user;
 }
 
 class Detail extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            user: {}
+            user: {
+                id: 0,
+                name: '',
+                password: '',
+                email: '',
+                active: false,
+                role: '',
+                createdAt: '',
+                updatedAt: '',
+            },
         }
     }
 
@@ -25,30 +36,8 @@ class Detail extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        this.getUser()
-            .then((data) => {
-                console.log('DetailScreen/ComponentDidMount -> Response: ', data);
-                this.setState({ user: data.data });
-            })
-    }
-
-    getUser = () => {
-        return fetch('https://tq-template-server-sample.herokuapp.com/users/' + this.props.navigation.state.params.id, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: this.props.navigation.state.params.token
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('DetailScreen/getUser -> responseJson: ', responseJson);
-                return (responseJson);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+        readUser(this.props.navigation.state.params.id, this.props.navigation.state.params.token)
+            .then((response: any) => { this.setState({ user: response }) })
     }
 
     render() {

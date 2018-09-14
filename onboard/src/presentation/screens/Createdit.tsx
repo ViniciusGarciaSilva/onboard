@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View } from 'react-native';
 import Card from '../components/Card';
 import Field from '../components/Field';
 import Button from '../components/Button';
 import Picker from '../components/Picker';
+import { user, createUser, editUser } from '../../domain/User'
+import { checkEmail, checkName, checkPassword7, checkRole } from '../../domain/Validator'
 
 export interface Props {
-  authorization: any;
+  token: any;
   type: string;
   id: string;
   nextStep(): void;
@@ -14,10 +16,7 @@ export interface Props {
 }
 
 interface State {
-  name: string;
-  password: string;
-  email: string;
-  role: string;
+  user: user,
   validName: boolean;
   validEmail: boolean;
   validPassword: boolean;
@@ -32,10 +31,16 @@ class Crud extends Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      name: '',
-      email: '',
-      password: '',
-      role: '',
+      user: {
+        id: 0,
+        name: '',
+        password: '',
+        email: '',
+        active: false,
+        role: '',
+        createdAt: '',
+        updatedAt: '',
+      },
       validName: false,
       validEmail: false,
       validPassword: false,
@@ -50,85 +55,46 @@ class Crud extends Component<Props, State> {
     };
   }
 
-
-
-  createUser = () => {
-    return fetch('https://tq-template-server-sample.herokuapp.com/users' + this.props.id, {
-      method: this.props.type,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: this.props.authorization
-      },
-      body: JSON.stringify({
-        "name": this.state.name,
-        "password": this.state.password,
-        "email": this.state.email,
-        "role": this.state.role
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseJson) => {
-        return (responseJson);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
+  onChangeRole = (role: string) => {
+    const newUser = this.state.user;
+    newUser.role = role;
+    this.setState({ user: newUser, validRole: checkRole(role) });
   }
 
-  onChangeRole = (role: any) => {
-    this.setState({ role: role });
-    if (role == 'admin' || role == 'user')
-      this.setState({ validRole: true });
-    else
-      this.setState({ validRole: false });
-    console.log("state.role: ", this.state.role, "role:", role);
+  onChangeName = (name: string) => {
+    const newUser = this.state.user;
+    newUser.name = name;
+    this.setState({ user: newUser, validName: checkName(name) });
   }
 
-  onChangeName = (name: any) => {
-    var checkName = /^[a-zA-Z]+$/;
-    this.setState({ name: name });
-
-    if (checkName.test(name))
-      this.setState({ validName: true });
-    else
-      this.setState({ validName: false });
+  onChangeEmail = (email: string) => {
+    const newUser = this.state.user;
+    newUser.email = email;
+    this.setState({ user: newUser, validEmail: checkEmail(email) });
   }
 
-  onChangeEmail = (email: any) => {
-    var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    this.setState({ email: email });
-
-    if (checkEmail.test(email))
-      this.setState({ validEmail: true });
-    else
-      this.setState({ validEmail: false });
-
-  }
-
-  onChangePassword = (password: any) => {
-    var checkPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{7,}$/;
-    this.setState({ password: password });
-
-    if (checkPassword.test(password))
-      this.setState({ validPassword: true });
-    else
-      this.setState({ validPassword: false });
+  onChangePassword = (password: string) => {
+    const newUser = this.state.user;
+    newUser.password = password;
+    this.setState({ user: newUser, validPassword: checkPassword7(password) });
   }
 
   onPressButton = () => {
     this.setState({ loading: true });
-    this.createUser()
-      .then((response) => {
-        console.log(response);
-        this.setState({ loading: false, data: response });
-        if (response.data == null)
-          alert(response.errors[0].message);
-        else {
-          alert("Success!!");
+    switch (this.props.type) {
+      case "create":
+        createUser(this.state.user, this.props.token).then((response: any) => {
+          alert("User created!")
+          this.setState({ loading: false, user: response });
           this.props.nextStep();
-        }
-      })
+        })
+      case "edit":
+        editUser(this.state.user, this.props.token).then((response: any) => {
+          alert("User edited!")
+          this.setState({ loading: false, user: response });
+          this.props.nextStep();
+        })
+    }
   }
 
   render() {
@@ -138,7 +104,7 @@ class Crud extends Component<Props, State> {
           field="Name"
           secure={false}
           placeholder="name"
-          value={this.state.name}
+          value={this.state.user.name}
           onChangeText={this.onChangeName}
           valid={this.state.validName}
           invalid="Invalid Name !" >
@@ -147,7 +113,7 @@ class Crud extends Component<Props, State> {
           field="E-mail"
           secure={false}
           placeholder="e-mail"
-          value={this.state.email}
+          value={this.state.user.email}
           onChangeText={this.onChangeEmail}
           valid={this.state.validEmail}
           invalid="Invalid E-mail !">
@@ -156,7 +122,7 @@ class Crud extends Component<Props, State> {
           field="Password"
           secure={true}
           placeholder="password"
-          value={this.state.password}
+          value={this.state.user.password}
           onChangeText={this.onChangePassword}
           valid={this.state.validPassword}
           invalid="Invalid Password !">

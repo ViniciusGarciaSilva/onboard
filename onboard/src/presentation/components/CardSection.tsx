@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 const CardSection = (props: any) => {
     return (
@@ -9,7 +9,7 @@ const CardSection = (props: any) => {
     );
 };
 
-const styles: any = {
+const styles = StyleSheet.create({
     containerStyle: {
         height: 90,
         marginBottom: 10,
@@ -19,6 +19,6 @@ const styles: any = {
         flexDirection: 'column',
         borderRadius: 5
     }
-}
+});
 
 export default CardSection;

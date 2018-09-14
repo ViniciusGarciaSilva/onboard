@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, StyleSheet } from 'react-native';
 
 export interface Props {
     onPress(): void;
@@ -18,7 +18,7 @@ class CardList extends Component<Props> {
     }
 };
 
-const styles: any = {
+const styles = StyleSheet.create({
     containerStyle: {
         height: 90,
         marginBottom: 10,
@@ -28,6 +28,6 @@ const styles: any = {
         flexDirection: 'column',
         borderRadius: 5
     }
-}
+});
 
 export default CardList;

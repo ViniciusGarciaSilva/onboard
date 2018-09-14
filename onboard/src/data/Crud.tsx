@@ -10,9 +10,7 @@ export function create(user: user, token: string): Promise<any> {
 }
 
 function createdit(user: user, type: string, token: string): Promise<any> {
-  var id = '';
-  if (user.id > 0) id = String(user.id);
-  return axios('https://tq-template-server-sample.herokuapp.com/users/' + id, { //(user.id>0?id:''), {
+  return axios('https://tq-template-server-sample.herokuapp.com/users/' + (user.id>0?user.id:''), {
     method: type,
     headers: {
       Accept: 'application/json',

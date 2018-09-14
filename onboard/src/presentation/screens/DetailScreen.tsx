@@ -32,7 +32,7 @@ class Detail extends Component<Props, State> {
     }
 
     onPressButton = () => {
-        this.props.navigation.navigate('EditUser', { token: this.props.navigation.state.params.token, id: this.state.user.id });
+        this.props.navigation.navigate('EditUser', { token: this.props.navigation.state.params.token, user: this.state.user });
     }
 
     componentDidMount = () => {

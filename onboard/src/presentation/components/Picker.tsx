@@ -10,6 +10,7 @@ export interface Props {
     field: string;
     secure: boolean;
     item: any;
+    value: string;
 }
 
 interface State {
@@ -20,7 +21,7 @@ class Picker extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            value: null
+            value: this.props.value
         }
     }
 

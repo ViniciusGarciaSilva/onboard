@@ -10,9 +10,9 @@ import { checkEmail, checkName, checkPassword7, checkRole } from '../../domain/V
 export interface Props {
   token: any;
   type: string;
-  id: string;
   nextStep(): void;
   button: String;
+  user: user;
 }
 
 interface State {
@@ -31,16 +31,7 @@ class Crud extends Component<Props, State> {
   constructor(props: any) {
     super(props);
     this.state = {
-      user: {
-        id: 0,
-        name: '',
-        password: '',
-        email: '',
-        active: false,
-        role: '',
-        createdAt: '',
-        updatedAt: '',
-      },
+      user: this.props.user,
       validName: false,
       validEmail: false,
       validPassword: false,
@@ -83,18 +74,50 @@ class Crud extends Component<Props, State> {
     this.setState({ loading: true });
     switch (this.props.type) {
       case "create":
-        createUser(this.state.user, this.props.token).then((response: any) => {
-          alert("User created!")
-          this.setState({ loading: false, user: response });
-          this.props.nextStep();
-        })
+        createUser(this.state.user, this.props.token)
+          .then((response: any) => {
+            alert("User created!")
+            this.setState({ loading: false, user: response });
+            this.props.nextStep();
+          })
+          .catch((error) => {
+            alert(error);
+          })
       case "edit":
-        editUser(this.state.user, this.props.token).then((response: any) => {
-          alert("User edited!")
-          this.setState({ loading: false, user: response });
-          this.props.nextStep();
-        })
+        editUser(this.state.user, this.props.token)
+          .then((response: any) => {
+            alert("User edited!")
+            this.setState({ loading: false, user: response });
+            this.props.nextStep();
+          })
+          .catch((error) => {
+            alert(error);
+          })
     }
+  }
+
+  componentDidMount = () => {
+    this.setState({
+      validEmail: checkEmail(this.state.user.email),
+      validName: checkName(this.state.user.name),
+      validPassword: true,
+      validRole: checkRole(this.state.user.role)
+    });
+  }
+
+  renderPassword() {
+    if ( this.props.type=="create")
+      return(<Field
+        field="Password"
+        secure={true}
+        placeholder="password"
+        value={this.state.user.password}
+        onChangeText={this.onChangePassword}
+        valid={this.state.validPassword}
+        invalid="Invalid Password !">
+      </Field>)
+    if( this.props.type=="edit")
+      return null;
   }
 
   render() {
@@ -118,21 +141,14 @@ class Crud extends Component<Props, State> {
           valid={this.state.validEmail}
           invalid="Invalid E-mail !">
         </Field>
-        <Field
-          field="Password"
-          secure={true}
-          placeholder="password"
-          value={this.state.user.password}
-          onChangeText={this.onChangePassword}
-          valid={this.state.validPassword}
-          invalid="Invalid Password !">
-        </Field>
+        {this.renderPassword()}
         <Picker
           pickerItems={this.state.pickerItems}
           onValueChange={this.onChangeRole}
           item={this.state.item}
           field="Role"
           secure={false}
+          value={this.state.user.role}
           placeholder={{
             label: 'select a role',
             value: null,

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Text, FlatList, View } from 'react-native';
+import { Text, FlatList } from 'react-native';
 import Card from '../components/Card';
 import CardList from '../components/CardList'
 import ActionButton from 'react-native-action-button';
-import { user } from '../../domain/User'
+import { user, getUsers } from '../../domain/User'
 
 export interface Props {
     navigation: any;
@@ -40,7 +40,6 @@ class List extends Component<Props, State> {
     }
 
     onPressUser = (item: any) => {
-        console.log('ListScreen/onPressButton -> item:', item)
         this.props.navigation.navigate('Detail', { token: this.props.navigation.state.params.token, id: item.id });
     }
 
@@ -48,38 +47,16 @@ class List extends Component<Props, State> {
         var page = this.state.page;
         page++;
         this.setState({ page: page })
-        this.getUsers(page, 5)
-            .then((response) => {
-                console.log(response);
-                this.setState({ users: [...this.state.users, ...response.data], pagination: response.pagination});
-            })
+        this.getUserList(page, 5)
     }
 
     componentDidMount = () => {
-        this.getUsers(0, 10)
-            .then((response) => {
-                console.log(response);
-                this.setState({ users: [...this.state.users, ...response.data], pagination: response.pagination});           
-            })
+        this.getUserList(0, 10)
     }
 
-    getUsers = (page: any, window: any) => {
-        return fetch('https://tq-template-server-sample.herokuapp.com/users?pagination={"page": ' + page + ' , "window": ' + window + '}', {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                Authorization: this.props.navigation.state.params.token
-            }
-        })
-            .then((response) => response.json())
-            .then((responseJson) => {
-                console.log('ListScreen/getUsers -> responseJson: : ', responseJson);
-                return (responseJson);
-            })
-            .catch((error) => {
-                console.error(error);
-            })
+    getUserList = (page: any, window: any) => {
+        getUsers(page, window, this.props.navigation.state.params.token)
+            .then((response) => this.setState({ users: [...this.state.users, ...response.data], pagination: response.pagination}) )
     }
 
     render() {

@@ -32,7 +32,7 @@ export function readUser(id: number, token: string): Promise<any> {
 
 export function getUsers(page: number, window: number, token: string): Promise<any> {
     return get(page, window, token)
-        .then((response: any) => { return (response.data) })
+        .then((response: any) => { console.log(response); return (response) })
         .catch((error: any) => { throw (error) })
 }
 

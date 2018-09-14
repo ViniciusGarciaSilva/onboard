@@ -44,6 +44,7 @@ class Login extends Component<Props, State> {
                 this.props.navigation.navigate('List', { token: response.token });
             })
             .catch((error: any) => {
+                this.setState({ loading: false });
                 alert(error);
             })
     };

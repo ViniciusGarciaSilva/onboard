@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { Text, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 
 export interface Props {
     onPress(): void;
@@ -23,7 +23,7 @@ class Button extends Component<Props> {
     };
 };
 
-const styles: any = {
+const styles = StyleSheet.create({
     textStyle: {
         color: '#FFF',
         fontSize: 20,
@@ -51,7 +51,7 @@ const styles: any = {
         shadowOffset: { width: 0, height: 3 },
         shadowOpacity: 0.1,
         elevation: 1
-    }
-}
+    },
+});
 
 export default Button;

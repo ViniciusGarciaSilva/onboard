@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import CardSection from '../components/CardSection';
 import Card from '../components/Card';
 import ActionButton from 'react-native-action-button';
@@ -72,7 +72,7 @@ class Detail extends Component<Props, State> {
 
 export default Detail;
 
-const styles: any = {
+const styles = StyleSheet.create({
     containerStyle: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
@@ -90,4 +90,4 @@ const styles: any = {
         fontSize: 17,
         flex: 1
     }
-}
+});

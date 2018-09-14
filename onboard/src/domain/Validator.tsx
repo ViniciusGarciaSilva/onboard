@@ -9,11 +9,7 @@ export function checkName (name: string): boolean {
 
 export function checkEmail(email: string): boolean {
   var checkEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  
-  if (checkEmail.test(email))
-    return true;
-  else
-    return false;
+  return checkEmail.test(email); 
 };
 
 export function checkPassword7(password: string): boolean {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 import CardSection from './CardSection';
 
 export interface Props {
@@ -36,7 +36,7 @@ class Field extends Component<Props> {
 
 export default Field;
 
-const styles: any = {
+const styles = StyleSheet.create({
     containerStyle: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
@@ -77,5 +77,4 @@ const styles: any = {
         marginTop: 4,
         color: '#fff'
     }
-}
-
+});

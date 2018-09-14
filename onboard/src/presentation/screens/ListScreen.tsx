@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, FlatList } from 'react-native';
+import { Text, FlatList, StyleSheet } from 'react-native';
 import Card from '../components/Card';
 import CardList from '../components/CardList'
 import ActionButton from 'react-native-action-button';
@@ -82,7 +82,7 @@ class List extends Component<Props, State> {
 
 export default List;
 
-const styles: any = {
+const styles = StyleSheet.create({
     nameStyle: {
         fontSize: 18,
         color: '#000'
@@ -91,4 +91,4 @@ const styles: any = {
         fontSize: 15,
         color: '#000'
     }
-}
+})

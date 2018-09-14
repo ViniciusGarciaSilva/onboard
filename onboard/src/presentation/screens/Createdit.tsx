@@ -5,7 +5,7 @@ import Field from '../components/Field';
 import Button from '../components/Button';
 import Picker from '../components/Picker';
 import { user, createUser, editUser } from '../../domain/User'
-import { checkEmail, checkName, checkPassword7, checkRole} from '../../domain/Validator'
+import { checkEmail, checkName, checkPassword7, checkRole } from '../../domain/Validator'
 
 export interface Props {
   token: any;
@@ -58,7 +58,7 @@ class Crud extends Component<Props, State> {
   onChangeRole = (role: string) => {
     const newUser = this.state.user;
     newUser.role = role;
-    this.setState({ user: newUser, validName: checkRole(role) });
+    this.setState({ user: newUser, validRole: checkRole(role) });
   }
 
   onChangeName = (name: string) => {
@@ -81,22 +81,20 @@ class Crud extends Component<Props, State> {
 
   onPressButton = () => {
     this.setState({ loading: true });
-    if(this.props.type == 'create')
-      createUser(this.state.user, this.props.token)
-      .then( (response: any) => {
-        alert(response.message);
-        this.setState({ loading: false });
-        if(response.result)
-          this.props.nextStep()
-      });
-    if(this.props.type == 'edit')
-      editUser(this.state.user, this.props.token)
-      .then( (response: any) => {
-        alert(response.message);
-        this.setState({ loading: false });
-        if(response.result)
-          this.props.nextStep()
-      });
+    switch (this.props.type) {
+      case "create":
+        createUser(this.state.user, this.props.token).then((response: any) => {
+          alert("User created!")
+          this.setState({ loading: false, user: response });
+          this.props.nextStep();
+        })
+      case "edit":
+        editUser(this.state.user, this.props.token).then((response: any) => {
+          alert("User edited!")
+          this.setState({ loading: false, user: response });
+          this.props.nextStep();
+        })
+    }
   }
 
   render() {

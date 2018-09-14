@@ -1,4 +1,5 @@
 import { edit, create, read, get } from '../data/Crud'
+import { validate } from '../data/Credentials'
 
 export type user = {
     id: number;
@@ -11,57 +12,32 @@ export type user = {
     updatedAt: string;
 }
 
-export function createUser(user: user, token: string): any {
+export function createUser(user: user, token: string): Promise<any> {
     return create(user, token)
-    .then((response: any) => {
-        if(response.data==null&&response.errors!=null)
-            return ({result: false, message: response.errors[0].message });
-        if(response.data!=null)
-            return ({result: true, message: "User Created" });
-    })
-    .catch((error: any)=>{
-        console.log(error);
-    });
+        .then((response: any) => { return (response.data) })
+        .catch((error: any) => { throw (error) })
 }
 
-export function editUser(user: user, token: string): any {
+export function editUser(user: user, token: string): Promise<any> {
     return edit(user, token)
-    .then((response: any) => {
-        if(response.data==null&&response.errors!=null)
-            return ({result: false, message: response.errors[0].message });
-        if(response.data!=null)
-            return ({result: true, message: "User Edited" });
-        return ({result: false, message: "ERROR" });
-        })
-    .catch((error: any)=>{
-        console.log(error);
-    });
+        .then((response: any) => { return (response.data) })
+        .catch((error: any) => { throw (error) })
 }
 
-export function readUser(id: number, token: string): any {
+export function readUser(id: number, token: string): Promise<any> {
     return read(id, token)
-    .then((response: any) => {
-        if(response.data==null&&response.errors!=null)
-            return ({result: false, message: response.errors[0].message, user: null });
-        if(response.data!=null)
-            return ({result: true, message: "User Edited", user: response.data });
-        return ({result: false, message: "ERROR", user: null });
-    })
-    .catch((error: any)=>{
-        console.log(error);
-    });
+        .then((response: any) => { return (response.data) })
+        .catch((error: any) => { throw (error) })
 }
 
-export function getUsers(page: number, window: number, token: string): any {
+export function getUsers(page: number, window: number, token: string): Promise<any> {
     return get(page, window, token)
-    .then((response: any) => {
-        if(response.data==null&&response.errors!=null)
-            return ({result: false, message: response.errors[0].message, users: null });
-        if(response.data!=null)
-            return ({result: true, message: "Users!", user: response.data });
-        return ({result: false, message: "ERROR", users: null });
-    })
-    .catch((error: any)=>{
-        console.log(error);
-    });     
+        .then((response: any) => { return (response.data) })
+        .catch((error: any) => { throw (error) })
 }
+
+export function validateUser(email: string, password: string): Promise<any> {
+    return validate(email, password)
+        .then((response: any) => { return ({ user: response.data.user, token: response.data.token }) })
+        .catch((error: string) => { throw (error) })
+}   

@@ -3,19 +3,17 @@ import { View } from 'react-native';
 import Button from '../components/Button';
 import Card from '../components/Card';
 import Field from '../components/Field'
-import { user } from '../../domain/User'
-import { checkCredentials } from '../../data/Credentials'
+import { user, validateUser } from '../../domain/User'
 import { checkEmail, checkPassword4 } from '../../domain/Validator';
 
 export interface Props {
     navigation: any;
 }
-
 interface State {
     user: user;
     loading: boolean;
     validEmail: boolean;
-    validPassword: boolean; 
+    validPassword: boolean;
 }
 
 class Login extends Component<Props, State> {
@@ -40,16 +38,13 @@ class Login extends Component<Props, State> {
 
     onPressButton = () => {
         this.setState({ loading: true });
-        checkCredentials(this.state.user.email, this.state.user.password)
+        validateUser(this.state.user.email, this.state.user.password)
             .then((response: any) => {
-                this.setState({ user: response.data.user, loading: false, validPassword:false });
-                if (response.data == null)
-                    alert(response.errors[0].message);
-                else
-                    this.props.navigation.navigate('List', { token: response.data.token });
+                this.setState({ user: response.user, loading: false, validPassword: false });
+                this.props.navigation.navigate('List', { token: response.token });
             })
             .catch((error: any) => {
-                console.error(error);
+                alert(error);
             })
     };
 

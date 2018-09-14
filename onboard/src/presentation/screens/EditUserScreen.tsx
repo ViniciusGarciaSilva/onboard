@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Crud from './Crud';
+import Crud from './Createdit';
 
 export interface Props {
     navigation: any;

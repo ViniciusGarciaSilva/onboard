@@ -1,24 +1,18 @@
-export function checkCredentials(email: string, password: string): any {
-  return fetch('https://tq-template-server-sample.herokuapp.com/authenticate', {
-      method: 'POST',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          'password': password,
-          'email': email,
-          'rememberMe': 'false',
-      }),
-  })
-      .then((response) => response.json())
-      .then((responseJson) => {
-          console.log(responseJson);
-          return (responseJson);
-      })
-      .catch((error: any) => {
-          console.error(error);
-          console.log(error);
-          return (error);
-      })
+import axios from 'axios';
+
+export function validate(email: string, password: string): Promise<any> {
+    return axios('https://tq-template-server-sample.herokuapp.com/authenticate', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        data: ({
+            'password': password,
+            'email': email,
+            'rememberMe': 'false',
+        }),
+    })
+        .then((response) => { return (response.data) })
+        .catch((error: any) => { throw (error.response.data.errors[0].message) })
 }

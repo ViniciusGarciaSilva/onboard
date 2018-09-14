@@ -4,20 +4,30 @@ import CardSection from '../components/CardSection';
 import Card from '../components/Card';
 import ActionButton from 'react-native-action-button';
 import { readUser } from '../../domain/User'
+import { user } from '../../domain/User'
 
 export interface Props {
     navigation: any;
 }
 
 interface State {
-    user: any;
+    user: user;
 }
 
 class Detail extends Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            user: {}
+            user: {
+                id: 0,
+                name: '',
+                password: '',
+                email: '',
+                active: false,
+                role: '',
+                createdAt: '',
+                updatedAt: '',
+            },
         }
     }
 
@@ -26,11 +36,8 @@ class Detail extends Component<Props, State> {
     }
 
     componentDidMount = () => {
-        readUser(this.props.navigation.state.params.id , this.props.navigation.state.params.token)
-            .then( (response: any) => {
-                console.log('DetailScreen/ComponentDidMount -> Response: ', response);
-                this.setState({ user: response.user });
-            })
+        readUser(this.props.navigation.state.params.id, this.props.navigation.state.params.token)
+            .then((response: any) => { this.setState({ user: response }) })
     }
 
     render() {

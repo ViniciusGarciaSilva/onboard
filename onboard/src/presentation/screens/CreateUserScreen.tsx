@@ -6,14 +6,27 @@ export interface Props {
 }
 
 class CreateUser extends Component<Props> {
+    
+    
     render() {
+        const user= {
+            id: 0,
+            name: '',
+            password: '',
+            email: '',
+            active: false,
+            role: '',
+            createdAt: '',
+            updatedAt: '',
+        }
+        
         return (
             <Crud 
                 token={this.props.navigation.state.params.token} 
                 type='create'
-                id=''
                 nextStep={() => this.props.navigation.navigate('List')}
-                button="Create" 
+                button="Create"
+                user={user}
             />
         )
     }
